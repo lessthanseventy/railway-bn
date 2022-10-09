@@ -1,0 +1,23 @@
+<html>
+  <main>
+    <img src="https://bun.sh/logo@2x.png" style="height: 48px" alt="bun logo" />
+    <h4>Rendered at: <span id="rightnow" /></h4>
+    <h2>
+      <span>Full request to render time: <span id="overrideme" />ms</span>
+    </h2>
+    <script>
+      const currentTime = new Date()
+      document.getElementById('rightnow').innerHTML = currentTime.toString()
+      // round trip time
+      const fullTime = currentTime - window.performance.timing.requestStart
+      document.getElementById('overrideme').innerHTML = fullTime.toString()
+      console.log('TIME', fullTime)
+
+      const times =
+        JSON.parse(localStorage.getItem('astro-edge-times-store')) ?? []
+      times.push(fullTime)
+      localStorage.setItem('astro-edge-times-store', JSON.stringify(times))
+      console.table(times)
+    </script>
+  </main>
+</html>

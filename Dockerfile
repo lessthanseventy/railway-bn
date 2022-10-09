@@ -1,17 +1,20 @@
-FROM frolvlad/alpine-glibc:glibc-2.30
+# Choose the Image which has Node installed already
+FROM node:alpine
 
-WORKDIR /bun
-RUN apk --no-cache add curl bash libstdc++ ca-certificates && \
-    curl -fsSL -o "/bun/bun.zip" "https://github.com/Jarred-Sumner/bun/releases/download/bun-v0.1.2/bun-linux-x64.zip" && \
-    unzip -d /bun -q -o "/bun/bun.zip" && \
-    mv /bun/bun-linux-x64/bun /usr/local/bin/bun && \
-    chmod 777 /usr/local/bin/bun && \
-    rm "/bun/bun.zip" && \
-    apk del curl bash
+# Create app directory
+WORKDIR /usr/src/app
 
-WORKDIR /app
-RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser && chown -R 101:101 /app && chmod -R g+w /app
-USER appuser
-COPY . ./
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
-CMD ["bun", "run", "server.js"]
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
+COPY . .
+
+EXPOSE 8080
+
+CMD ["npm", "start"]
