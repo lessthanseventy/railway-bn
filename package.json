@@ -1,0 +1,14 @@
+{
+  "name": "railway_express_bun_web_app",
+  "version": "1.0.0",
+  "description": "Node.js and Express Bun on Fly",
+  "author": "Andrew Moore",
+  "main": "node_server.js",
+  "private": true,
+  "scripts": {
+    "start": "node node_server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
